@@ -1,11 +1,17 @@
 language: python
 
+python:
+  - "3.7"
+
 services:
   - docker
 
 before_install:
   - docker pull influxdb
   - docker run -d -p 8086:8086 -v influxdb:/var/lib/influxdb --name influxdb influxdb
+
+script:
+  - ls -al
 
 after_script:
   - docker run -it --net=host docker.io/influxdb influx -execute 'select * from mymeasures' -database=testmod
